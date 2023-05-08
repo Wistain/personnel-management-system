@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title添加用户< /title>
+			<meta name="renderer" content="webkit">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+			<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+			<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+			<link rel="stylesheet" href="../css/public.css" media="all">
+			<link rel="stylesheet" href="../lib/lay-module/step-lay/step.css" media="all">
+			<style>
+				body {
+					background-color: #ffffff;
+				}
+			</style>
+	</head>
+	<body>
+		<div class="layui-form layuimini-form">
+			<div class="layui-form-item">
+				<label class="layui-form-label required">姓名</label>
+				<div class="layui-input-block">
+					<input id="name" type="text" name="username" lay-verify="required" lay-reqtext="姓名不能为空"
+						placeholder="请输入姓名" value="" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">性别</label>
+				<div class="layui-input-block">
+					<input id="Man" type="radio" name="sex" value="男" title="男" checked="">
+					<input id="Woman" type="radio" name="sex" value="女" title="女">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">生日</label>
+				<div class="layui-input-inline">
+					<input type="text" name="date" id="birthday" lay-verify="date" placeholder="yyyy-MM-dd"
+						autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">职位</label>
+				<div class="layui-input-block">
+					<select id="job" lay-verify="required">
+						<option value="1" selected>员工</option>
+						<option value="2">经理</option>
+						<option value="3">总监</option>
+						<option value="4">总裁</option>
+						<option value="5">董事长</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">部门</label>
+				<div class="layui-input-block">
+					<select id="department" lay-verify="required">
+						<option value="1" selected>人事部</option>
+						<option value="2">办公室</option>
+						<option value="3">财务部</option>
+						<option value="4">营销部</option>
+					</select>
+					<tip>选择员工所属部门</tip>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">受教育程度</label>
+				<div class="layui-input-block">
+					<select id="education" lay-verify="required">
+						<option value="1">小学</option>
+						<option value="2">初中</option>
+						<option value="3">高中</option>
+						<option value="4">职高</option>
+						<option value="5" selected>大本</option>
+						<option value="6">大专</option>
+						<option value="7">硕士</option>
+						<option value="8">博士</option>
+						<option value="9">博士后</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item" id="area-picker">
+				<div class="layui-form-label">专业技能</div>
+				<div class="layui-input-inline">
+					<select name="department" class="department-selector" data-value="计算机科学与工程"
+						lay-filter="department-1" id="dept">
+						<option value="">请选择系</option>
+					</select>
+				</div>
+				<div class="layui-input-inline">
+					<select id="major" name="major" class="major-selector" data-value="数据科学与大数据技术" lay-filter="major-1">
+						<option value="">请选择专业</option>
+					</select>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">家庭住址</label>
+				<div class="layui-input-block">
+					<input id="address" type="text" name="title" lay-verify="title" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">联系电话</label>
+				<div class="layui-input-block">
+					<input id="tel" type="tel" name="phone" lay-verify="phone" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">电子邮箱</label>
+				<div class="layui-inline">
+					<input id="email" type="text" name="email" lay-verify="email" autocomplete="off" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">备注</label>
+				<div class="layui-input-block">
+					<textarea id="remark" placeholder="备注信息" value="" class="layui-textarea"></textarea>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+				</div>
+			</div>
+		</div>
+		<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+		<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+		<script>
+			layui.use(['form', 'laydate', 'layer', 'layarea'], function() {
+				var $ = layui.$;
+				var form = layui.form;
+				var layer = layui.layer;
+				var layarea = layui.layarea;
+				var id;
+				layarea.render({
+					elem: '#area-picker',
+					change: function(res) {
+						//选择结果
+						console.log(res);
+					}
+				});
+				var laydate = layui.laydate;
+				laydate.render({
+					elem: '#birthday'
+				});
+				var passwd = "123456";
+				form.on('submit(saveBtn)', function(data) {
+					var state = "T";
+					var userName = $("#name").val();
+					var job = $("#job option:selected").text();
+					var edulevel = $("#education option:selected").text();
+					var department = $("#department option:selected").text();
+					var checkbox1 = document.getElementById("Man");
+					var checkbox2 = document.getElementById("Woman");
+					if (checkbox1.checked == true && checkbox2.checked == false) {
+						var sex = "男";
+					}
+					if (checkbox1.checked == false && checkbox2.checked == true) {
+						var sex = "女";
+					}
+					var birthday = $("#birthday").val();
+					var specialty = $("#dept option:selected").text() + $("#major option:selected").text();
+					var address = $("#address").val();
+					var tel = $("#tel").val();
+					var email = $("#email").val();
+					var remark = $("#remark").val();
+					if(department == "人事部"){
+						var authority = "管理员";
+					}else{
+						var authority = "用户";
+					}
+					$.ajax({
+						url: "http://localhost:8080/staffs/reg",
+						type: "post",
+						data: "name=" + userName + "&sex=" + sex + "&birthday=" + birthday + "&department=" +
+							department + "&job=" + job + "&edulevel=" + edulevel + "&specialty=" + specialty +
+							"&address=" + address + "&tel=" + tel + "&email=" + email + "&remark=" + remark + 
+							"&passwd=" + passwd + "&authority=" + authority + "&state=" + state,
+						dataType: "JSON",
+						async: false,
+						success: function(reg) {
+							if (reg.state == '200') {
+								layer.msg("提交成功", {
+									icon: 1,
+									time: 3000
+								}, function() {
+									location.reload();
+								});
+							} else {
+								alert(reg.msg);
+							}
+						},
+						error: function(data) {
+							alert("出错啦!");
+						}
+					});
+
+					$.ajax({
+						url: "http://localhost:8080/staffs/findIdByName",
+						type: "post",
+						data: "name=" + userName,
+						dataType: "text",
+						async: false,
+						success: function(reg) {
+							id = reg;
+						},
+						error: function(data) {
+							alert("出错啦!");
+						}
+					});
+					
+					$.ajax({
+						url: "http://localhost:8080/departments/add",
+						type: "post",
+						data: "name=" + department,
+						async: false,
+						success: function(reg) {
+						},
+						error: function(data) {
+						}
+					});
+					
+					$.ajax({
+						url: "http://localhost:8080/changes/reg",
+						type: "post",
+						data: "person=" + id + "&changecode=" + 0 + "&description=" + remark,
+						async: false,
+						success: function(reg) {
+						},
+						error: function(data) {
+							alert("出错啦!");
+						}
+					});
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyz.manage.mapper.ChangeMapper">
+    <resultMap id="ChangeEntityMap" type="com.wyz.manage.entity.Change">
+        <id column="ID" property="id"></id>
+        <result column="ID" property="id"></result>
+        <result column="PERSON" property="person"></result>
+        <result column="CHANGECODE" property="changecode"></result>
+        <result column="DESCRIPTION" property="description"></result>
+    </resultMap>
+
+    <insert id="insert">
+        INSERT into personnel (
+        PERSON, CHANGECODE, DESCRIPTION
+        ) VALUES ( #{person}, #{changecode}, #{description}
+        )
+    </insert>
+
+</mapper>

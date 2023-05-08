@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>员工信息修改</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+		<link rel="stylesheet" href="../css/public.css" media="all">
+		<style>
+			body {
+				background-color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+		<form class="layui-form layui-form-pane" action="">
+			<div class="layui-input-block">
+				<div class="layui-inline">
+					<label class="layui-form-label">员工号</label>
+					<div class="layui-input-block">
+						<input id="ID" type="text" name="title" autocomplete="off" placeholder="请输入员工号"
+							class="layui-input" style="width: 300px;">
+						<tip style="color: darkgray;">请填写需修改信息员工的员工号。</tip>
+					</div>
+				</div>
+				<div class="layui-inline">
+					<button id="sure" class="layui-btn" type="button" style="margin-top: -20px;">确认</button>
+				</div>
+			</div>
+		</form>
+		<div class="layui-form layuimini-form" id="edit" style="display: none;">
+			<p>该员工信息如下：</p>
+			<div class="layui-form-item">
+				<label class="layui-form-label ">密码</label>
+				<div class="layui-input-block">
+					<input id="password" type="text" class="layui-input">
+				</div>
+			</div>
+			<div class="layui-form layuimini-form">
+				<div class="layui-form-item">
+					<label class="layui-form-label">姓名</label>
+					<div class="layui-input-block">
+						<input id="name" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">性别</label>
+					<div class="layui-input-block">
+						<input id="sex" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">生日</label>
+					<div class="layui-input-inline">
+						<input id="birthday" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">职位</label>
+					<div class="layui-input-block">
+						<input id="job" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">部门</label>
+					<div class="layui-input-block">
+						<input id="department" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">受教育程度</label>
+					<div class="layui-input-block">
+						<input id="edulevel" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">专业技能</label>
+					<div class="layui-input-block">
+						<input id="specialty" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">家庭住址</label>
+					<div class="layui-input-block">
+						<input id="address" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">联系电话</label>
+					<div class="layui-input-block">
+						<input id="tel" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">电子邮箱</label>
+					<div class="layui-inline">
+						<input id="email" type="text" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">备注</label>
+					<div class="layui-input-block">
+						<textarea id="remark" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button id="sureEdit" class="layui-btn layui-btn-normal" lay-submit
+							lay-filter="saveBtn">确认修改</button>
+					</div>
+				</div>
+			</div>
+			<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+			<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+			<script>
+				function my(id) {
+					return document.getElementById(id);
+				}
+
+				my("sure").onclick = function() {
+					if (my("ID").value == "") {
+						alert("请输入员工号！");
+						window.location.reload();
+					}
+					if (my("edit").style.display == "none") {
+						my("edit").style.display = "block";
+					} else {
+						my("edit").style.display = "none";
+					}
+					if (my("ID").value != "") {
+						layui.use(['form', 'laydate', 'layer', 'layarea'], function() {
+							var $ = layui.$;
+							var form = layui.form;
+							var layer = layui.layer;
+							var layarea = layui.layarea;
+							var id = my("ID").value;
+							var passwd, name, sex, job, edulevel, department, birthday, specialty, address, tel, email,
+								remark;
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findpwd",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									if (reg == "") {
+										alert("请输入正确的员工号！");
+										window.location.reload();
+									}
+									passwd = reg;
+								},
+								error: function(data) {
+									alert("请求密码错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findNameById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									name = reg;
+								},
+								error: function(data) {
+									alert("请求姓名错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findSexById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									sex = reg;
+								},
+								error: function(data) {
+									alert("请求性别错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findBirthdayById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									birthday = reg;
+								},
+								error: function(data) {
+									alert("请求生日错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findDepartment",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									department = reg;
+								},
+								error: function(data) {
+									alert("请求部门错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findJobById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									job = reg;
+								},
+								error: function(data) {
+									alert("请求职位错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findEdulevelById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									edulevel = reg;
+								},
+								error: function(data) {
+									alert("请求学历错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findSpecialtyById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									specialty = reg;
+								},
+								error: function(data) {
+									alert("请求专业错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findAddressById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									address = reg;
+								},
+								error: function(data) {
+									alert("请求地址错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findTelById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									tel = reg;
+								},
+								error: function(data) {
+									alert("请求电话错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findEmailById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									email = reg;
+								},
+								error: function(data) {
+									alert("请求邮箱错误");
+								}
+							});
+
+							$.ajax({
+								url: "http://localhost:8080/staffs/findRemarkById",
+								type: "post",
+								data: "id=" + id,
+								dataType: "text",
+								async: false,
+								success: function(reg) {
+									remark = reg;
+								},
+								error: function(data) {
+									alert("请求备注错误");
+								}
+							});
+
+							my("password").value = passwd;
+							my("name").value = name;
+							my("sex").value = sex;
+							my("birthday").value = birthday;
+							my("job").value = job;
+							my("department").value = department;
+							my("edulevel").value = edulevel;
+							my("specialty").value = specialty;
+							my("address").value = address;
+							my("tel").value = tel;
+							my("email").value = email;
+							my("remark").value = remark;
+							return false;
+						});
+					}
+				}
+
+				my("sureEdit").onclick = function() {
+						layui.use(['form', 'laydate', 'layer', 'layarea'], function() {
+								var $ = layui.$;
+								var form = layui.form;
+								var layer = layui.layer;
+								var layarea = layui.layarea;
+								var id = my("ID").value;
+								var passwd, name, sex, job, edulevel, department, birthday, specialty, address, tel, email,
+									remark;
+								passwd = my("password").value;
+								name = my("name").value;
+								sex = my("sex").value;
+								birthday = my("birthday").value;
+								job = my("job").value;
+								department = my("department").value;
+								edulevel = my("edulevel").value;
+								specialty = my("specialty").value;
+								address = my("address").value;
+								tel = my("tel").value;
+								email = my("email").value;
+								remark = my("remark").value;
+								$.ajax({
+									url: "http://localhost:8080/staffs/alter",
+									type: "post",
+									data: "passwd=" + passwd + "&name=" + name + "&sex=" + sex + "&birthday=" +
+										birthday + "&job=" + job +
+										"&department=" + department + "&edulevel=" + edulevel + "&specialty=" +
+										specialty +
+										"&address=" + address +
+										"&tel=" + tel + "&email=" + email + "&remark=" + remark + "&id=" + id,
+									async: false,
+									success: function(reg) {
+										alert("修改信息成功！")
+									},
+									error: function(data) {
+										alert("修改信息失败！");
+									}
+								});
+							});
+						}
+			</script>
+	</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "name":"test1",
+      "password":"123",
+      "sex":"女",
+      "status":"普通用户"
+    },
+    {
+      "name":"wistain",
+      "password":"123456",
+      "sex":"男",
+      "status":"超级管理员"
+    },
+    {
+      "name":"wyz",
+      "password":"123",
+      "sex":"女",
+      "status":"普通用户"
+    },
+    {
+      "name":"曾嘉诚",
+      "password":"123",
+      "sex":"男",
+      "status":"超级管理员"
+    }
+  ]
+}

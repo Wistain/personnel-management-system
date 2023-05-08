@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyz.manage.mapper.StaffMapper">
+    <resultMap id="StaffEntityMap" type="com.wyz.manage.entity.Staff">
+        <id column="ID" property="id"></id>
+        <result column="ID" property="id"></result>
+        <result column="PASSWD" property="passwd"></result>
+        <result column="AUTHORITY" property="authority"></result>
+        <result column="NAME" property="name"></result>
+        <result column="SEX" property="sex"></result>
+        <result column="BIRTHDAY" property="birthday"></result>
+        <result column="DEPARTMENT" property="department"></result>
+        <result column="JOB" property="job"></result>
+        <result column="EDU_LEVEL" property="edulevel"></result>
+        <result column="SPECIALTY" property="specialty"></result>
+        <result column="ADDRESS" property="address"></result>
+        <result column="TEL" property="tel"></result>
+        <result column="EMAIL" property="email"></result>
+        <result column="STATE" property="state"></result>
+        <result column="REMARK" property="remark"></result>
+    </resultMap>
+
+    <insert id="insert" >
+        INSERT into person (
+        NAME, SEX, BIRTHDAY, DEPARTMENT, JOB, EDU_LEVEL, SPECIALTY, ADDRESS, TEL, EMAIL, REMARK, PASSWD, AUTHORITY, STATE
+        ) VALUES ( #{name}, #{sex}, #{birthday}, #{department}, #{job}, #{edulevel}, #{specialty}, #{address}, #{tel}, #{email}, #{remark}, #{passwd}, #{authority}, #{state}
+        )
+    </insert>
+
+    <select id ="findById" resultMap="StaffEntityMap">
+        SELECT * from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findNameById" resultType="String">
+        SELECT NAME from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findSexById" resultType="String">
+        SELECT SEX from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findBirthdayById" resultType="String">
+        SELECT BIRTHDAY from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findJobById" resultType="String">
+        SELECT JOB from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findEdulevelById" resultType="String">
+        SELECT EDU_LEVEL from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findSpecialtyById" resultType="String">
+        SELECT SPECIALTY from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findAddressById" resultType="String">
+        SELECT Address from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findTelById" resultType="String">
+        SELECT TEL from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findEmailById" resultType="String">
+        SELECT EMAIL from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findRemarkById" resultType="String">
+        SELECT REMARK from person WHERE ID = #{id}
+    </select>
+
+    <select id ="findByName" resultMap="StaffEntityMap">
+        SELECT * FROM person WHERE NAME LIKE concat('%',#{name},'%')
+    </select>
+
+    <select id="findBySex" resultMap="StaffEntityMap">
+        SELECT * from person WHERE SEX = #{sex}
+    </select>
+
+    <select id="findByJob" resultMap="StaffEntityMap">
+        SELECT * from person WHERE JOB = #{job}
+    </select>
+
+    <select id="findByDepartment" resultMap="StaffEntityMap">
+        SELECT * FROM person WHERE DEPARTMENT LIKE concat('%',#{department},'%')
+    </select>
+
+    <select id="findByEduLevel" resultMap="StaffEntityMap">
+        SELECT * from person WHERE EDU_LEVEL = #{edulevel}
+    </select>
+
+    <select id="findBySpecialty" resultMap="StaffEntityMap">
+        SELECT * from person WHERE SPECIALTY = #{specialty}
+    </select>
+
+    <select id="findPasswd" resultType="String">
+        SELECT passwd from person WHERE ID = #{id}
+    </select>
+
+    <select id="findIdByName" resultType="int">
+        SELECT id from person WHERE NAME = #{name}
+    </select>
+
+    <select id="findAll" resultMap="StaffEntityMap">
+        SELECT * from person
+    </select>
+
+    <select id="findPart" resultMap="StaffEntityMap">
+        SELECT * FROM person LIMIT #{begin},#{amount}
+    </select>
+
+    <select id="fastFind" resultMap="StaffEntityMap">
+        SELECT * FROM person WHERE CONCAT(ID,PASSWD,AUTHORITY,NAME,SEX,BIRTHDAY,DEPARTMENT,JOB,EDU_LEVEL,SPECIALTY,
+        ADDRESS,TEL,EMAIL,STATE) LIKE concat('%',#{condition},'%')
+    </select>
+
+    <update id="alter">
+        UPDATE person SET NAME = #{name}, SEX = #{sex}, BIRTHDAY =  #{birthday}, EDU_LEVEL = #{edulevel}, SPECIALTY = #{specialty}, ADDRESS = #{address}, TEL = #{tel}, EMAIL = #{email}, REMARK = #{remark} WHERE ID = #{id}
+    </update>
+
+    <update id="alter2">
+        UPDATE person SET PASSWD = #{password}, NAME = #{name}, SEX = #{sex}, BIRTHDAY =  #{birthday}, JOB = #{job}, DEPARTMENT = #{department}, EDU_LEVEL = #{edulevel}, SPECIALTY = #{specialty}, ADDRESS = #{address}, TEL = #{tel}, EMAIL = #{email}, REMARK = #{remark} WHERE ID = #{id}
+    </update>
+
+    <update id="change">
+        UPDATE person SET JOB = #{job}, DEPARTMENT = #{department} WHERE ID = #{id}
+    </update>
+
+    <update id="alterPassword">
+        UPDATE person SET PASSWD = #{password} WHERE ID = #{id}
+    </update>
+
+    <update id="changeState">
+        UPDATE person SET STATE = 'F' WHERE ID = #{id}
+    </update>
+
+    <select id="findStateById" resultType="String">
+        SELECT state FROM person WHERE ID = #{id}
+    </select>
+
+    <select id="findDepartmentById" resultType="String">
+        SELECT department FROM person WHERE ID = #{id}
+    </select>
+
+    <select id="findNumber" resultType="int">
+        SELECT COUNT(*) FROM person
+    </select>
+
+</mapper>
